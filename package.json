@@ -1,0 +1,19 @@
+{
+  "name": "kanap-front",
+  "version": "1.0.0",
+  "description": "kanap front end",
+  "main": "src/html/index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "webpack"
+  },
+  "author": "Valentin Nguyen",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
+    "babel-jest": "^29.6.1",
+    "jest": "^29.6.1"
+  },
+  "dependencies": {}
+}
