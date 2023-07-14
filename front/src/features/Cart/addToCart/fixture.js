@@ -1,11 +1,9 @@
 import { AddToCart } from "./addToCart";
 
 export const DATA = {
-  ITEM: {
+  PRODUCT: {
     id: "1",
-    quantity: 1,
     color: "red",
-    price: 10,
   },
 };
 
@@ -14,24 +12,18 @@ export class Fixture {
     this.cartFixture = cartFixture;
   }
 
-  #initUsecase({ cart, storageGateway }) {
-    this.addToCart = new AddToCart({ cart, storageGateway });
-  }
-
   givenAnEmptyCart() {
     const { cart, storageGateway } = this.cartFixture.init().build();
-    this.cart = cart;
-    this.storageGateway = storageGateway;
-    this.#initUsecase({ cart, storageGateway });
+    this.#defineDependencies({ cart, storageGateway });
   }
 
   givenACartWithAlreadyAddedItem() {
     const { cart, storageGateway } = this.cartFixture
       .init()
-      .withProducts(DATA.ITEM)
+      .withProducts(DATA.PRODUCT)
       .build();
 
-    this.#initUsecase({ cart, storageGateway });
+    this.#defineDependencies({ cart, storageGateway });
   }
 
   whenUserAddToCart(product) {
@@ -39,14 +31,14 @@ export class Fixture {
   }
 
   whenUserAddTheSameItemToCart() {
-    this.whenUserAddToCart(DATA.ITEM);
+    this.whenUserAddToCart(DATA.PRODUCT);
   }
 
   thenTheProductQuantityShouldIncrease() {
     expect(this.cart.getState()).toStrictEqual({
       products: {
-        [DATA.ITEM.id]: {
-          ...DATA.ITEM,
+        [DATA.PRODUCT.id]: {
+          ...DATA.PRODUCT,
           quantity: 2,
         },
       },
@@ -54,12 +46,21 @@ export class Fixture {
   }
 
   thenTheProductShouldBeAddedToCart() {
-    expect(this.storageGateway.getById(DATA.ITEM.id)).toStrictEqual(DATA.ITEM);
+    expect(this.storageGateway.getById(DATA.PRODUCT.id)).toStrictEqual({
+      ...DATA.PRODUCT,
+      quantity: 1,
+    });
 
     expect(this.cart.getState()).toStrictEqual({
       products: {
-        [DATA.ITEM.id]: DATA.ITEM,
+        [DATA.PRODUCT.id]: { ...DATA.PRODUCT, quantity: 1 },
       },
     });
+  }
+
+  #defineDependencies({ cart, storageGateway }) {
+    this.cart = cart;
+    this.storageGateway = storageGateway;
+    this.addToCart = new AddToCart({ cart, storageGateway });
   }
 }

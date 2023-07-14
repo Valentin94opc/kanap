@@ -8,4 +8,8 @@ export class InMemoryStorageGateway {
   save(itemId, item) {
     this.store.set(itemId, item);
   }
+
+  remove(itemId) {
+    this.store.delete(itemId);
+  }
 }

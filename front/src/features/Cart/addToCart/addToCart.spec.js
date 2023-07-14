@@ -7,7 +7,7 @@ describe("addToCart usecase", () => {
   it("should add a item to cart given a empty cart", () => {
     _.givenAnEmptyCart();
 
-    _.whenUserAddToCart(DATA.ITEM);
+    _.whenUserAddToCart(DATA.PRODUCT);
 
     _.thenTheProductShouldBeAddedToCart();
   });
